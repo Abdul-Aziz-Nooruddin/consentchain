@@ -1,0 +1,151 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\USER\\Desktop\\consentchain\\contracts\\ConsentRegistry.sol": {
+      "lastModificationDate": 1773395486834,
+      "contentHash": "670ffd2fd59f828c6ba2b857f2c0aeae",
+      "sourceName": "contracts/ConsentRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ConsentRegistry"
+      ]
+    },
+    "C:\\Users\\USER\\Desktop\\consentchain\\contracts\\DataAccessEscrow.sol": {
+      "lastModificationDate": 1773396480925,
+      "contentHash": "1722e6f63294077e8379a4cc5ac26f04",
+      "sourceName": "contracts/DataAccessEscrow.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ConsentRegistry.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "DataAccessEscrow"
+      ]
+    },
+    "C:\\Users\\USER\\Desktop\\consentchain\\contracts\\SubscriptionManager.sol": {
+      "lastModificationDate": 1773396621622,
+      "contentHash": "896a1113e5fbccc123df46b3652d2501",
+      "sourceName": "contracts/SubscriptionManager.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "SubscriptionManager"
+      ]
+    },
+    "C:\\Users\\USER\\Desktop\\consentchain\\contracts\\UserEarningsWallet.sol": {
+      "lastModificationDate": 1773396764749,
+      "contentHash": "fed784635bfb8d786cfaac356854539f",
+      "sourceName": "contracts/UserEarningsWallet.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "UserEarningsWallet"
+      ]
+    }
+  }
+}
