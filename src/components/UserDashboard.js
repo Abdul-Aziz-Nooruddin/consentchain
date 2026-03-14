@@ -16,6 +16,8 @@ function UserDashboard() {
   const [earnings, setEarnings] = useState("0");
   const [status, setStatus] = useState("");
   const [statusType, setStatusType] = useState("");
+  const [loading, setLoading] = useState("");
+  const [transactions, setTransactions] = useState([]);
 
   const connectWallet = async () => {
     try {
@@ -23,8 +25,6 @@ function UserDashboard() {
         method: "eth_requestAccounts",
       });
       setAccount(accounts[0]);
-      setStatus("Wallet connected: " + accounts[0]);
-      setStatusType("success");
       loadEarnings(accounts[0]);
     } catch (err) {
       setStatus("Error connecting wallet");
@@ -47,8 +47,20 @@ function UserDashboard() {
     }
   };
 
+  const addTransaction = (type, detail, status) => {
+    const tx = {
+      id: Date.now(),
+      type,
+      detail,
+      status,
+      time: new Date().toLocaleTimeString(),
+    };
+    setTransactions((prev) => [tx, ...prev].slice(0, 10));
+  };
+
   const giveConsent = async () => {
     try {
+      setLoading("give");
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
@@ -67,14 +79,23 @@ function UserDashboard() {
       await tx.wait();
       setStatus("Consent given successfully!");
       setStatusType("success");
+      addTransaction("Give Consent", `To: ${companyAddress.slice(0, 10)}...`, "success");
+      setCompanyAddress("");
+      setDataType("");
+      setPurpose("");
+      setDuration("");
     } catch (err) {
       setStatus("Error: " + err.message);
       setStatusType("error");
+      addTransaction("Give Consent", "Failed", "error");
+    } finally {
+      setLoading("");
     }
   };
 
   const revokeConsent = async () => {
     try {
+      setLoading("revoke");
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
@@ -88,14 +109,20 @@ function UserDashboard() {
       await tx.wait();
       setStatus("Consent revoked successfully!");
       setStatusType("success");
+      addTransaction("Revoke Consent", `From: ${revokeAddress.slice(0, 10)}...`, "success");
+      setRevokeAddress("");
     } catch (err) {
       setStatus("Error: " + err.message);
       setStatusType("error");
+      addTransaction("Revoke Consent", "Failed", "error");
+    } finally {
+      setLoading("");
     }
   };
 
   const checkConsent = async () => {
     try {
+      setLoading("check");
       const provider = new ethers.BrowserProvider(window.ethereum);
       const contract = new ethers.Contract(
         addresses.ConsentRegistry,
@@ -105,14 +132,18 @@ function UserDashboard() {
       const result = await contract.checkConsent(checkUser, checkCompany);
       setStatus("Consent status: " + (result ? "✅ Active" : "❌ Not Active"));
       setStatusType(result ? "success" : "error");
+      addTransaction("Check Consent", result ? "Active" : "Not Active", result ? "success" : "error");
     } catch (err) {
       setStatus("Error: " + err.message);
       setStatusType("error");
+    } finally {
+      setLoading("");
     }
   };
 
   const withdrawEarnings = async () => {
     try {
+      setLoading("withdraw");
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
@@ -126,10 +157,13 @@ function UserDashboard() {
       await tx.wait();
       setStatus("Earnings withdrawn successfully!");
       setStatusType("success");
+      addTransaction("Withdraw", `${earnings} ETH`, "success");
       loadEarnings(account);
     } catch (err) {
       setStatus("Error: " + err.message);
       setStatusType("error");
+    } finally {
+      setLoading("");
     }
   };
 
@@ -142,7 +176,10 @@ function UserDashboard() {
             Connect MetaMask
           </button>
         ) : (
-          <p style={{ color: "#34d399" }}>✅ Connected: {account}</p>
+          <div className="connected-badge">
+            <div className="dot"></div>
+            {account.slice(0, 6)}...{account.slice(-4)}
+          </div>
         )}
       </div>
 
@@ -150,8 +187,12 @@ function UserDashboard() {
         <div className="card">
           <h3>💰 Your Earnings</h3>
           <div className="earnings">{earnings} ETH</div>
-          <button className="btn-success" onClick={withdrawEarnings}>
-            Withdraw Earnings
+          <button
+            className={`btn-success ${loading === "withdraw" ? "btn-loading" : ""}`}
+            onClick={withdrawEarnings}
+            disabled={loading === "withdraw"}
+          >
+            {loading === "withdraw" ? "⏳ Withdrawing..." : "Withdraw Earnings"}
           </button>
         </div>
 
@@ -177,8 +218,12 @@ function UserDashboard() {
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
           />
-          <button className="btn-primary" onClick={giveConsent}>
-            Give Consent
+          <button
+            className={`btn-primary ${loading === "give" ? "btn-loading" : ""}`}
+            onClick={giveConsent}
+            disabled={loading === "give"}
+          >
+            {loading === "give" ? "⏳ Processing..." : "Give Consent"}
           </button>
         </div>
 
@@ -189,8 +234,12 @@ function UserDashboard() {
             value={revokeAddress}
             onChange={(e) => setRevokeAddress(e.target.value)}
           />
-          <button className="btn-danger" onClick={revokeConsent}>
-            Revoke Consent
+          <button
+            className={`btn-danger ${loading === "revoke" ? "btn-loading" : ""}`}
+            onClick={revokeConsent}
+            disabled={loading === "revoke"}
+          >
+            {loading === "revoke" ? "⏳ Revoking..." : "Revoke Consent"}
           </button>
         </div>
 
@@ -206,8 +255,12 @@ function UserDashboard() {
             value={checkCompany}
             onChange={(e) => setCheckCompany(e.target.value)}
           />
-          <button className="btn-primary" onClick={checkConsent}>
-            Check Consent
+          <button
+            className={`btn-primary ${loading === "check" ? "btn-loading" : ""}`}
+            onClick={checkConsent}
+            disabled={loading === "check"}
+          >
+            {loading === "check" ? "⏳ Checking..." : "Check Consent"}
           </button>
         </div>
       </div>
@@ -215,6 +268,38 @@ function UserDashboard() {
       {status && (
         <div className={`status ${statusType}`}>
           {status}
+        </div>
+      )}
+
+      {transactions.length > 0 && (
+        <div className="card" style={{ marginTop: "20px" }}>
+          <h3>📋 Transaction History</h3>
+          <div className="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Detail</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((tx) => (
+                  <tr key={tx.id}>
+                    <td>{tx.type}</td>
+                    <td>{tx.detail}</td>
+                    <td>
+                      <span className={`badge badge-${tx.status}`}>
+                        {tx.status === "success" ? "✅ Success" : "❌ Failed"}
+                      </span>
+                    </td>
+                    <td>{tx.time}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
