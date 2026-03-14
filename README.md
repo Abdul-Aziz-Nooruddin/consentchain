@@ -1,3 +1,52 @@
+# ConsentChain 🔐
+
+> "We didn't build a privacy policy. 
+We built a privacy protocol."
+
+## 🚨 Problem
+Every day millions of Indians share 
+personal data with apps — but no 
+tamper-proof record of consent exists.
+Companies store consent in editable 
+databases. Users have no power to 
+revoke it. Regulators cannot verify it.
+
+The DPDP Act 2023 makes this a legal 
+problem — but the technical solution 
+doesn't exist yet.
+
+## ✅ Solution
+ConsentChain records every consent 
+event immutably on blockchain.
+Companies must verify consent before 
+accessing data. Users earn money every 
+time their data is accessed.
+
+## 💡 How It Works
+1. User gives consent → stored on-chain
+2. Company pays fee into escrow
+3. Smart contract verifies consent
+4. Payment released to user (50%)
+5. User can revoke anytime instantly
+
+## 🔨 Tech Stack
+- Solidity + OpenZeppelin
+- Polygon Testnet
+- React.js + ethers.js
+- Hardhat
+
+## 📦 Smart Contracts
+| Contract | Purpose |
+|---|---|
+| ConsentRegistry.sol | Core consent logic |
+| DataAccessEscrow.sol | Escrow payments |
+| UserEarningsWallet.sol | User rewards |
+| SubscriptionManager.sol | Company plans |
+
+## 🏆 Hackathon
+AlgoBharat Hack Series 3.0
+Track: DPDP & RegTech + Future of Finance
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
